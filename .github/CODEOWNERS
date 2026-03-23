@@ -1,0 +1,11 @@
+# Default owner (all files)
+* @sohailsafdar-official1
+
+# Security-sensitive scripts
+scripts/* @sohailsafdar-official1
+
+# Tests
+tests/* @sohailsafdar-official1
+
+# GitHub workflows (CI/CD)
+.github/workflows/* @sohailsafdar-official1
