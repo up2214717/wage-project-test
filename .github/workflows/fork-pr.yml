@@ -1,0 +1,53 @@
+name: Fork PR - Convert Hourly to Daily Rate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout fork repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Create or switch branch
+        run: |
+          git fetch origin
+          if git show-ref --verify --quiet refs/heads/feature/daily-rate-update; then
+            git checkout feature/daily-rate-update
+          else
+            git checkout -b feature/daily-rate-update
+          fi
+
+      - name: Run refactor script
+        run: |
+          python scripts/update_to_daily_rate.py
+
+      - name: Create Pull Request to upstream
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # replace with PAT if upstream
+          base: main
+          branch: feature/daily-rate-update
+          commit-message: "Refactor: switch from hourly rate to daily rate"
+          title: "Refactor: Hourly → Daily wage calculation"
+          body: |
+            This PR updates the wage calculation:
+            - Replaces hourly rate with daily rate (£80/day)
+            - Updates variable names (hours → days)
+            - Uses safer scripted refactoring

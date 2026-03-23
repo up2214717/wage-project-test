@@ -1,0 +1,68 @@
+name: PR Validation + Auto Approve
+
+on:
+  pull_request:
+    branches: [main, ClassExample1]
+    types: [opened, synchronize]
+
+jobs:
+
+#  confidentiliaty-test:
+#    runs-on: ubuntu-latest
+
+#    permissions:
+#      contents: write
+#      pull-requests: write
+
+#    steps:
+#      - name: Checkout PR code
+#        uses: actions/checkout@v4
+
+#      - name: Set up Python
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.10'
+
+    # The new Added confidentiality Test
+#      - name: Check Staff ID confidentiality
+#        run: |
+#          python ./scripts/check_staff_id_confidentiality.py
+
+  lint-and-approve:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      
+      #Linting steps
+      - name: Install linter
+        run: |
+          pip install flake8
+
+      - name: Run linting
+        run: |
+          flake8 . --max-line-length=100
+
+      # Auto approve PR
+#      - name: Auto approve PR
+#        uses: hmarr/auto-approve-action@v3
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Auto merge PR if checks pass
+#      - name: Enable auto-merge
+#        uses: peter-evans/enable-pull-request-automerge@v3
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          merge-method: squash
