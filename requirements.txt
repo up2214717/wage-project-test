@@ -1,0 +1,14 @@
+# Linting
+flake8
+
+# Pre-commit hooks
+pre-commit
+
+# Testing (optional but recommended)
+pytest
+
+# Code formatting (optional but recommended)
+black
+
+# Security scanning (optional helper for local dev)
+bandit
